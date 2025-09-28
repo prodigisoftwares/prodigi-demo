@@ -1,9 +1,11 @@
-from django.views.generic import TemplateView, View
-from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
-from .models import Question, Politician, TestSubmission
-from .utils import compute_coords
 import math
+
+from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
+from django.shortcuts import render
+from django.views.generic import TemplateView, View
+
+from .models import Politician, Question, TestSubmission
+from .utils import compute_coords
 
 
 class IndexView(TemplateView):

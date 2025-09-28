@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Politician, Question, Choice
+
+from .models import Choice, Politician, Question
 
 
 @admin.register(Question)
