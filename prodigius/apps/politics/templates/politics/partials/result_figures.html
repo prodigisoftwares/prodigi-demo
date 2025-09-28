@@ -1,0 +1,48 @@
+<!-- Closest Figures Section Partial -->
+<div class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-xl border border-slate-200/50 mb-8">
+  <h3 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+    <svg class="w-6 h-6 mr-3 text-primary-600"
+         fill="none"
+         stroke="currentColor"
+         viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+    Closest Political Figures
+  </h3>
+  <div class="grid gap-4">
+    {% for p in nearest %}
+      <div class="bg-gradient-to-r from-white/60 to-white/40 backdrop-blur-sm rounded-xl p-6 border border-slate-200/50 hover:shadow-lg transition-all duration-300">
+        <div class="flex items-start justify-between">
+          <div class="flex-1">
+            <h4 class="text-lg font-semibold text-slate-800 mb-2">
+              {{ p.name }}
+            </h4>
+            <p class="text-slate-600 mb-3">
+              {{ p.blurb }}
+            </p>
+            <div class="flex items-center space-x-4 text-sm">
+              <div class="flex items-center space-x-1">
+                <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                <span class="text-slate-500">Economic: {{ p.x|floatformat:2 }}</span>
+              </div>
+              <div class="flex items-center space-x-1">
+                <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                <span class="text-slate-500">Social: {{ p.y|floatformat:2 }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="ml-4 text-right">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-slate-100 rounded-xl">
+              <svg class="w-6 h-6 text-slate-600"
+                   fill="none"
+                   stroke="currentColor"
+                   viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>

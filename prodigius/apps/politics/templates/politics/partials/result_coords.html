@@ -1,0 +1,58 @@
+<!-- Coordinates Display Partial -->
+<div class="grid md:grid-cols-2 gap-6 mb-8">
+  <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/50">
+    <div class="flex items-center space-x-3 mb-3">
+      <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+        <svg class="w-5 h-5 text-white"
+             fill="none"
+             stroke="currentColor"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-slate-800">
+        Economic Axis
+      </h3>
+    </div>
+    <p class="text-3xl font-bold text-primary-600 mb-2">
+      {{ x|floatformat:2 }}
+    </p>
+    <p class="text-sm text-slate-600">
+      {% if x < -0.5 %}
+        <span class="font-medium text-red-600">Left-leaning</span> economic views
+      {% elif x > 0.5 %}
+        <span class="font-medium text-blue-600">Right-leaning</span> economic views
+      {% else %}
+        <span class="font-medium text-slate-600">Centrist</span> economic views
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/50">
+    <div class="flex items-center space-x-3 mb-3">
+      <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+        <svg class="w-5 h-5 text-white"
+             fill="none"
+             stroke="currentColor"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-slate-800">
+        Social Axis
+      </h3>
+    </div>
+    <p class="text-3xl font-bold text-primary-600 mb-2">
+      {{ y|floatformat:2 }}
+    </p>
+    <p class="text-sm text-slate-600">
+      {% if y < -0.5 %}
+        <span class="font-medium text-orange-600">Authoritarian</span> social views
+      {% elif y > 0.5 %}
+        <span class="font-medium text-green-600">Libertarian</span> social views
+      {% else %}
+        <span class="font-medium text-slate-600">Moderate</span> social views
+      {% endif %}
+    </p>
+  </div>
+</div>
