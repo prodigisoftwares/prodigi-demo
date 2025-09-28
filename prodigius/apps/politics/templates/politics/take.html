@@ -1,0 +1,61 @@
+{% extends "politics/base.html" %}
+{% block title %}
+  Take the Test
+{% endblock title %}
+{% block content %}
+  <div class="mx-auto max-w-3xl" x-data="{ submitting: false }">
+    <form id="test-form"
+          hx-post="{% url "politics:score" %}"
+          hx-target="#result"
+          hx-swap="innerHTML"
+          @submit="submitting = true">
+      {% csrf_token %}
+
+      {% for q in questions %}
+        <div class="mb-6 rounded-lg bg-white p-4 shadow">
+          <div class="mb-3 font-medium">
+            {{ q.order }}. {{ q.text }}
+          </div>
+
+          <div class="grid gap-2 sm:grid-cols-2">
+            {% for c in q.choices.all %}
+              <label class="flex items-start gap-2 rounded border border-gray-200 p-3 hover:bg-gray-50">
+                <input class="mt-1" name="q{{ q.order }}" type="radio" value="{{ c.label }}">
+                <span><span class="font-semibold">{{ c.label }}</span>. {{ c.text }}</span>
+              </label>
+            {% endfor %}
+
+            <label class="flex items-start gap-2 rounded border border-gray-200 p-3 hover:bg-gray-50">
+              <input class="mt-1" name="q{{ q.order }}" type="radio" value="Neither">
+              <span><span class="font-semibold">Neither</span> applies</span>
+            </label>
+
+            <label class="flex items-start gap-2 rounded border border-gray-200 p-3 hover:bg-gray-50">
+              <input class="mt-1" name="q{{ q.order }}" type="radio" value="Both">
+              <span><span class="font-semibold">Both</span> have merit</span>
+            </label>
+
+          </div>
+
+        </div>
+      {% endfor %}
+
+      <div class="flex items-center justify-between">
+        <button type="submit"
+                class="rounded-lg bg-green-600 px-6 py-3 text-white hover:bg-green-700"
+                :disabled="submitting">
+
+          <span x-show="!submitting">See my result</span>
+          <span x-show="submitting">Scoring...</span>
+
+        </button>
+        <p class="text-sm text-gray-500">
+          Your picks are scored server-side.
+        </p>
+      </div>
+    </form>
+
+    <div id="result" class="mt-8">
+    </div>
+  </div>
+{% endblock content %}

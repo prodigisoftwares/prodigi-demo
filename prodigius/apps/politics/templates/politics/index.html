@@ -1,0 +1,17 @@
+{% extends "politics/base.html" %}
+
+{% block title %}
+  Home · Political Spectrum Test
+{% endblock title %}
+
+{% block content %}
+  <div class="mx-auto max-w-2xl">
+    <p class="mb-6 text-lg">
+      Find your spot on a two-axis spectrum: Left vs Right and Authoritarian vs Libertarian.
+    </p>
+
+    <a href="{% url 'politics:test' %}"
+       class="inline-block rounded-lg bg-blue-600 px-6 py-3 text-white hover:bg-blue-700">Start the 8-question test</a>
+
+  </div>
+{% endblock content %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>
+      {% block title %}
+        Political Spectrum Test
+      {% endblock title %}
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-900">
+    <header class="bg-white shadow">
+      <div class="container mx-auto flex items-center justify-between px-4 py-4">
+        <h1 class="text-xl font-semibold tracking-tight">
+          Political Priorities Spectrum
+        </h1>
+
+        <nav>
+          <a class="text-sm hover:underline" href="{% url 'politics:index' %}">Home</a>
+          <span class="px-2 text-gray-300">|</span>
+          <a class="text-sm hover:underline" href="{% url 'politics:test' %}">Take the Test</a>
+        </nav>
+
+      </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+      {% block content %}
+      {% endblock content %}
+    </main>
+
+    <footer class="border-t bg-white">
+      <div class="container mx-auto px-4 py-6 text-sm text-gray-600">
+        Built with Django, HTMX, Alpine, Tailwind, Chart.js
+      </div>
+    </footer>
+  </body>
+</html>
