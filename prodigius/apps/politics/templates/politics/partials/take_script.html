@@ -36,3 +36,14 @@
         display: none !important;
     }
 </style>
+
+<script>
+  document.body.addEventListener('htmx:afterSwap', function(evt) {
+    if (evt.target && evt.target.id === 'result') {
+      const resultDiv = document.getElementById('result');
+      if (resultDiv) {
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  });
+</script>
