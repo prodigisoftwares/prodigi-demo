@@ -17,11 +17,13 @@ class Choice(models.Model):
     QUESTION_CHOICES = [
         ("A", "A"),
         ("B", "B"),
+        ("Both", "Both"),
+        ("Neither", "Neither"),
     ]
     question = models.ForeignKey(
         Question, on_delete=models.CASCADE, related_name="choices"
     )
-    label = models.CharField(max_length=1, choices=QUESTION_CHOICES)
+    label = models.CharField(max_length=10, choices=QUESTION_CHOICES)
     text = models.CharField(max_length=255)
 
     class Meta:

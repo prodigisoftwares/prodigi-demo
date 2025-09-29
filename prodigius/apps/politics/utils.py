@@ -9,6 +9,10 @@ Q_AXIS = {
     6: ("y", 0.8),
     7: ("x", 0.8),
     8: ("y", 0.8),
+    9: ("y", 0.9),  # Immigration policy - auth/lib axis
+    10: ("y", 0.7),  # Foreign policy - auth/lib axis
+    11: ("x", 0.9),  # Role of government - left/right axis
+    12: ("x", 0.8),  # Social safety net - left/right axis
 }
 
 
@@ -50,7 +54,7 @@ def compute_coords(answers: Dict[str, str]) -> Tuple[float, float]:
     x_total = y_total = 0.0
     x_weight = y_weight = 0.0
 
-    for qnum in range(1, 9):
+    for qnum in Q_AXIS.keys():
         choice = answers.get(f"q{qnum}")
         if not choice:
             continue

@@ -11,6 +11,11 @@ from .utils import compute_coords
 class IndexView(TemplateView):
     template_name = "politics/index.html"
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["questions"] = Question.objects.all()
+        return ctx
+
 
 class TakeView(TemplateView):
     template_name = "politics/take.html"
@@ -23,7 +28,11 @@ class TakeView(TemplateView):
 
 class ScoreView(View):
     def post(self, request: HttpRequest) -> HttpResponse:
-        answers = {f"q{i}": request.POST.get(f"q{i}", "") for i in range(1, 9)}
+        answers = {
+            f"q{i}": request.POST.get(f"q{i}", "")
+            for i in range(1, 13)
+            if request.POST.get(f"q{i}")
+        }
         x, y = compute_coords(answers)
         sub = TestSubmission.objects.create(answers=answers, x=x, y=y)
 
