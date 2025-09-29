@@ -4,154 +4,19 @@
 {% endblock title %}
 {% block content %}
   <div class="mx-auto max-w-4xl" x-data="testForm()" x-init="init()">
-
-    <!-- Header Section -->
-    <div class="text-center mb-12">
-      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-4">
-        Political Spectrum Test
-      </h1>
-      <p class="text-lg text-slate-600 mb-6">
-        Answer these 8 questions to discover your position on the political spectrum
-      </p>
-
-      <p class="text-lg text-slate-500">
-        8 Questions · 2-3 minutes
-      </p>
-    </div>
-
+    {% include "politics/partials/take_header.html" %}
     <form id="test-form"
-          hx-post="{% url "politics:score" %}"
+          hx-post="{% url 'politics:score' %}"
           hx-target="#result"
           hx-swap="innerHTML"
           @submit="submitting = true"
           @change="check()"
           class="space-y-8">
       {% csrf_token %}
-
-      {% for q in questions %}
-        <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-md border border-slate-200/50 hover:shadow-lg transition-all duration-300">
-
-          <div class="mb-6">
-            <div class="flex items-center justify-between mb-4">
-              <span class="inline-flex items-center justify-center w-8 h-8 bg-primary-500 text-white rounded-full font-bold text-sm">
-                {{ q.order }}
-              </span>
-              <span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
-                Question {{ q.order }}/{{ questions|length }}
-              </span>
-            </div>
-
-            <h3 class="text-xl md:text-2xl font-semibold text-slate-800 leading-relaxed">
-              {{ q.text }}
-            </h3>
-          </div>
-
-          <div class="grid gap-3 sm:grid-cols-2">
-            {% for c in q.choices.all %}
-              <label class="group flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 hover:border-primary-300 hover:bg-primary-50/50 transition-all duration-200 cursor-pointer">
-                <input class="mt-1 w-4 h-4 text-primary-600 border-slate-300 focus:ring-primary-500 focus:ring-2"
-                       name="q{{ q.order }}"
-                       type="radio"
-                       value="{{ c.label }}"
-                       @change="check()">
-                <div class="flex-1">
-                  <span class="font-semibold text-primary-700 group-hover:text-primary-800">{{ c.label }}</span>
-                  <span class="text-slate-700 group-hover:text-slate-800">. {{ c.text }}</span>
-                </div>
-              </label>
-            {% endfor %}
-
-            <label class="group flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all duration-200 cursor-pointer">
-              <input class="mt-1 w-4 h-4 text-slate-600 border-slate-300 focus:ring-slate-500 focus:ring-2"
-                     name="q{{ q.order }}"
-                     type="radio"
-                     value="Neither"
-                     @change="check()">
-              <div class="flex-1">
-                <span class="font-semibold text-slate-700">Neither</span>
-                <span class="text-slate-600"> applies</span>
-              </div>
-            </label>
-
-            <label class="group flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all duration-200 cursor-pointer">
-              <input class="mt-1 w-4 h-4 text-slate-600 border-slate-300 focus:ring-slate-500 focus:ring-2"
-                     name="q{{ q.order }}"
-                     type="radio"
-                     value="Both"
-                     @change="check()">
-              <div class="flex-1">
-                <span class="font-semibold text-slate-700">Both</span>
-                <span class="text-slate-600"> have merit</span>
-              </div>
-            </label>
-          </div>
-        </div>
-      {% endfor %}
-
-      <!-- Submit Section -->
-      <div class="bg-gradient-to-r from-white/60 to-white/40 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-slate-200/50 shadow-md">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 class="text-lg font-semibold text-slate-800 mb-2">
-              Ready to see your results?
-            </h3>
-            <p class="text-sm text-slate-600">
-              Your responses will be analyzed to determine your position on the political spectrum
-            </p>
-          </div>
-
-          <button type="submit"
-                  :class="(submitting || answered < totalQuestions) ? 'bg-gray-800 hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg cursor-not-allowed' : 'group bg-gradient-to-r from-accent-600 to-accent-700 hover:from-accent-700 hover:to-accent-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1'"
-                  :disabled="submitting || answered < totalQuestions"
-                  :aria-disabled="(submitting || answered < totalQuestions) ? 'true' : 'false'"
-                  :title="(submitting || answered < totalQuestions) ? 'Please answer all questions before submitting' : ''">
-
-            <span x-text="submitting ? 'Submitted' : (answered < totalQuestions ? 'Answer all questions' : 'See My Results')"></span>
-          </button>
-        </div>
-      </div>
+      {% include "politics/partials/take_form.html" %}
+      {% include "politics/partials/take_submit.html" %}
     </form>
-
-    <div id="result" class="mt-12 animate-slide-up">
-    </div>
+    {% include "politics/partials/take_result.html" %}
   </div>
-
-  <script>
-    function testForm() {
-      return {
-        submitting: false,
-        totalQuestions: {{ questions|length }},
-        answered: 0,
-        init() {
-          this.check();
-        },
-        check() {
-          try {
-            var form = document.getElementById('test-form');
-            if (!form) {
-              this.answered = 0;
-              return;
-            }
-            var inputs = form.querySelectorAll('input[type=radio]');
-            var seen = [];
-            for (var i = 0; i < inputs.length; i++) {
-              var input = inputs[i];
-              if (input.checked && seen.indexOf(input.name) === -1) {
-                seen.push(input.name);
-              }
-            }
-            this.answered = seen.length;
-          } catch (e) {
-            this.answered = 0;
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
-      [x-cloak] {
-          display: none !important;
-      }
-  </style>
+  {% include "politics/partials/take_script.html" %}
 {% endblock content %}

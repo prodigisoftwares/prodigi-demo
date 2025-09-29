@@ -1,0 +1,38 @@
+<script>
+  function testForm() {
+    return {
+      submitting: false,
+      totalQuestions: {{ questions|length }},
+      answered: 0,
+      init() {
+        this.check();
+      },
+      check() {
+        try {
+          var form = document.getElementById('test-form');
+          if (!form) {
+            this.answered = 0;
+            return;
+          }
+          var inputs = form.querySelectorAll('input[type=radio]');
+          var seen = [];
+          for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.checked && seen.indexOf(input.name) === -1) {
+              seen.push(input.name);
+            }
+          }
+          this.answered = seen.length;
+        } catch (e) {
+          this.answered = 0;
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+</style>
