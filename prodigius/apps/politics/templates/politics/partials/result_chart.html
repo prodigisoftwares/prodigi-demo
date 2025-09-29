@@ -33,20 +33,45 @@
       options: {
         aspectRatio: 1.6,
         scales: {
-          x: { type: 'linear', min: -1, max: 1, title: {display: true, text: 'Left (-) ↔ Right (+)'} },
-          y: { type: 'linear', min: -1, max: 1, title: {display: true, text: 'Authoritarian (-) ↔ Libertarian (+)'} }
+          x: { type: 'linear', min: -1, max: 1, title: {display: false} },
+          y: { type: 'linear', min: -1, max: 1, title: {display: false} }
         },
         plugins: {
           legend: { display: true },
-          tooltip: { 
-            callbacks: { 
-              label: (ctx) => {
-                if (ctx.datasetIndex === 0) 
-                  return `You (x ${ctx.parsed.x.toFixed(2)}, y ${ctx.parsed.y.toFixed(2)})`;
-                const p = pols[ctx.dataIndex];
-                return `${p.label} (x ${ctx.parsed.x.toFixed(2)}, y ${ctx.parsed.y.toFixed(2)})`;
-              }
+          tooltip: { enabled: false }
+        },
+        layout: {
+          padding: {
+            top: 10,
+            left: 10,
+            right: 80,
+            bottom: 10
+          }
+        },
+        animation: {
+          onComplete: function() {
+            const chart = this;
+            const ctx = chart.ctx;
+
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#374151';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+
+            // Draw "You" label to the right of user point
+            const userMeta = chart.getDatasetMeta(0);
+            if (userMeta.data.length > 0) {
+              const point = userMeta.data[0];
+              ctx.fillText('You', point.x + 8, point.y);
             }
+
+            // Draw political figure labels to the right of their points
+            const polsMeta = chart.getDatasetMeta(1);
+            polsMeta.data.forEach((point, index) => {
+              if (index < pols.length) {
+                ctx.fillText(pols[index].label, point.x + 8, point.y);
+              }
+            });
           }
         }
       }
