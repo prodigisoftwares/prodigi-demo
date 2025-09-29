@@ -1,0 +1,20 @@
+<!-- Submit Section Partial -->
+<div class="bg-gradient-to-r from-white/60 to-white/40 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-slate-200/50 shadow-md">
+  <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+    <div>
+      <h3 class="text-lg font-semibold text-slate-800 mb-2">
+        Ready to see your results?
+      </h3>
+      <p class="text-sm text-slate-600">
+        Your responses will be analyzed to determine your position on the political spectrum
+      </p>
+    </div>
+    <button type="submit"
+            :class="(submitting || answered < totalQuestions) ? 'bg-gray-800 hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg cursor-not-allowed' : 'group bg-gradient-to-r from-accent-600 to-accent-700 hover:from-accent-700 hover:to-accent-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1'"
+            :disabled="submitting || answered < totalQuestions"
+            :aria-disabled="(submitting || answered < totalQuestions) ? 'true' : 'false'"
+            :title="(submitting || answered < totalQuestions) ? 'Please answer all questions before submitting' : ''">
+      <span x-text="submitting ? 'Submitted' : (answered < totalQuestions ? 'Answer all questions' : 'See My Results')"></span>
+    </button>
+  </div>
+</div>

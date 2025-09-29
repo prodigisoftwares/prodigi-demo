@@ -1,0 +1,55 @@
+<!-- Chart Section Partial -->
+<div class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-xl border border-slate-200/50 mb-8">
+  <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">
+    Political Spectrum Visualization
+  </h3>
+  <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6">
+    <canvas id="spectrumChart" width="600" height="400" class="mx-auto"></canvas>
+  </div>
+  <div class="mt-4 text-center">
+    <p class="text-sm text-slate-500">
+      Your position is marked in blue, with similar political figures shown for reference
+    </p>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const userPoint = {x: {{ x|floatformat:3 }}, y: {{ y|floatformat:3 }}};
+    const pols = [
+      {% for p in nearest %}
+      {label: '{{ p.name|escapejs }}', x: {{ p.x|floatformat:3 }}, y: {{ p.y|floatformat:3 }}},
+      {% endfor %}
+    ];
+    const ctx = document.getElementById('spectrumChart');
+    new Chart(ctx, {
+      type: 'scatter',
+      data: {
+        datasets: [
+          { label: 'You', pointRadius: 6, data: [{x: userPoint.x, y: userPoint.y}] },
+          { label: 'Closest figures', pointRadius: 4, data: pols.map(p => ({x: p.x, y: p.y})) },
+        ]
+      },
+      options: {
+        aspectRatio: 1.6,
+        scales: {
+          x: { type: 'linear', min: -1, max: 1, title: {display: true, text: 'Left (-) ↔ Right (+)'} },
+          y: { type: 'linear', min: -1, max: 1, title: {display: true, text: 'Authoritarian (-) ↔ Libertarian (+)'} }
+        },
+        plugins: {
+          legend: { display: true },
+          tooltip: { 
+            callbacks: { 
+              label: (ctx) => {
+                if (ctx.datasetIndex === 0) 
+                  return `You (x ${ctx.parsed.x.toFixed(2)}, y ${ctx.parsed.y.toFixed(2)})`;
+                const p = pols[ctx.dataIndex];
+                return `${p.label} (x ${ctx.parsed.x.toFixed(2)}, y ${ctx.parsed.y.toFixed(2)})`;
+              }
+            }
+          }
+        }
+      }
+    });
+  })();
+</script>

@@ -1,0 +1,55 @@
+<!-- Question Form Partial (questions only, no form tag or submit) -->
+{% for q in questions %}
+  <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-md border border-slate-200/50 hover:shadow-lg transition-all duration-300">
+    <div class="mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <span class="inline-flex items-center justify-center w-8 h-8 bg-primary-500 text-white rounded-full font-bold text-sm">
+          {{ q.order }}
+        </span>
+        <span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+          Question {{ q.order }}/{{ questions|length }}
+        </span>
+      </div>
+      <h3 class="text-xl md:text-2xl font-semibold text-slate-800 leading-relaxed">
+        {{ q.text }}
+      </h3>
+    </div>
+    <div class="grid gap-3 sm:grid-cols-2">
+      {% for c in q.choices.all %}
+        <label class="group flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 hover:border-primary-300 hover:bg-primary-50/50 transition-all duration-200 cursor-pointer">
+          <input class="mt-1 w-4 h-4 text-primary-600 border-slate-300 focus:ring-primary-500 focus:ring-2"
+                 name="q{{ q.order }}"
+                 type="radio"
+                 value="{{ c.label }}"
+                 @change="check()">
+          <div class="flex-1">
+            <span class="font-semibold text-primary-700 group-hover:text-primary-800">{{ c.label }}</span>
+            <span class="text-slate-700 group-hover:text-slate-800">. {{ c.text }}</span>
+          </div>
+        </label>
+      {% endfor %}
+      <label class="group flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all duration-200 cursor-pointer">
+        <input class="mt-1 w-4 h-4 text-slate-600 border-slate-300 focus:ring-slate-500 focus:ring-2"
+               name="q{{ q.order }}"
+               type="radio"
+               value="Neither"
+               @change="check()">
+        <div class="flex-1">
+          <span class="font-semibold text-slate-700">Neither</span>
+          <span class="text-slate-600"> applies</span>
+        </div>
+      </label>
+      <label class="group flex items-start gap-3 p-4 rounded-xl border-2 border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all duration-200 cursor-pointer">
+        <input class="mt-1 w-4 h-4 text-slate-600 border-slate-300 focus:ring-slate-500 focus:ring-2"
+               name="q{{ q.order }}"
+               type="radio"
+               value="Both"
+               @change="check()">
+        <div class="flex-1">
+          <span class="font-semibold text-slate-700">Both</span>
+          <span class="text-slate-600"> have merit</span>
+        </div>
+      </label>
+    </div>
+  </div>
+{% endfor %}

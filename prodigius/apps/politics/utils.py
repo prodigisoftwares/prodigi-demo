@@ -1,6 +1,5 @@
 from typing import Dict, Tuple
 
-
 Q_AXIS = {
     1: ("x", 1.0),
     2: ("x", 1.0),

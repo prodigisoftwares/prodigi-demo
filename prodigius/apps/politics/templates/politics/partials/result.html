@@ -1,72 +1,7 @@
-<div class="rounded-lg bg-white p-6 shadow">
-  <h2 class="mb-4 text-xl font-semibold">
-    Your position
-  </h2>
-  <p class="mb-4">
-    X: {{ x|floatformat:2 }} (left to right), Y: {{ y|floatformat:2 }} (authoritarian to libertarian)
-  </p>
 
-  <div class="mb-6">
-    <canvas id="spectrumChart" width="600" height="400"></canvas>
-  </div>
-
-  <h3 class="mb-3 font-semibold">
-    Closest well-known figures
-  </h3>
-  <ul class="list-disc space-y-2 pl-6">
-    {% for p in nearest %}
-      <li>
-        <span class="font-medium">{{ p.name }}</span>
-        <span class="text-gray-600">(X {{ p.x|floatformat:2 }}, Y {{ p.y|floatformat:2 }})</span>
-        – {{ p.blurb }}
-      </li>
-    {% endfor %}
-  </ul>
-
-  <div class="mt-6">
-    <a href="{% url 'politics:test' %}"
-       class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Retake</a>
-  </div>
+<div class="animate-slide-up">
+  {% include "politics/partials/result_header.html" %}
+  {% include "politics/partials/result_chart.html" %}
+  {% include "politics/partials/result_figures.html" %}
+  {% include "politics/partials/result_actions.html" %}
 </div>
-
-
-<script>
-  (function() {
-    const userPoint = {x: {{ x|floatformat:3 }}, y: {{ y|floatformat:3 }}};
-    const pols = [
-      {% for p in nearest %}
-      {label: '{{ p.name|escapejs }}', x: {{ p.x|floatformat:3 }}, y: {{ p.y|floatformat:3 }}},
-      {% endfor %}
-    ];
-    const ctx = document.getElementById('spectrumChart');
-    new Chart(ctx, {
-      type: 'scatter',
-      data: {
-        datasets: [
-          { label: 'You', pointRadius: 6, data: [{x: userPoint.x, y: userPoint.y}] },
-          { label: 'Closest figures', pointRadius: 4, data: pols.map(p => ({x: p.x, y: p.y})) },
-        ]
-      },
-      options: {
-        aspectRatio: 1.6,
-        scales: {
-          x: { type: 'linear', min: -1, max: 1, title: {display: true, text: 'Left (-) ↔ Right (+)'} },
-          y: { type: 'linear', min: -1, max: 1, title: {display: true, text: 'Authoritarian (-) ↔ Libertarian (+)'} }
-        },
-        plugins: {
-          legend: { display: true },
-          tooltip: { 
-            callbacks: { 
-              label: (ctx) => {
-                if (ctx.datasetIndex === 0) 
-                  return `You (x ${ctx.parsed.x.toFixed(2)}, y ${ctx.parsed.y.toFixed(2)})`;
-                const p = pols[ctx.dataIndex];
-                return `${p.label} (x ${ctx.parsed.x.toFixed(2)}, y ${ctx.parsed.y.toFixed(2)})`;
-              }
-            }
-          }
-        }
-      }
-    });
-  })();
-</script>

@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import IndexView, TakeView, ScoreView
 
+from .views import IndexView, ScoreView, TakeView
 
 app_name = "politics"
 
