@@ -54,7 +54,7 @@ def compute_coords(answers: Dict[str, str]) -> Tuple[float, float]:
     x_total = y_total = 0.0
     x_weight = y_weight = 0.0
 
-    for qnum in range(1, 13):
+    for qnum in Q_AXIS.keys():
         choice = answers.get(f"q{qnum}")
         if not choice:
             continue
